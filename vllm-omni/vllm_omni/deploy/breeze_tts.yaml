@@ -1,0 +1,41 @@
+# Breeze TTS 2 development configuration: native AR/depth -> Mimi stage.
+# Checkpoint compatibility and hardware capacity are not yet validated.
+# Mimi streaming uses full-prefix replay with a held-back tail.
+async_chunk: true
+connectors:
+  connector_of_shared_memory:
+    name: SharedMemoryConnector
+    extra:
+      codec_streaming: true
+      depth_chunk_frames: 8
+      connector_get_sleep_s: 0.01
+      connector_get_max_wait_first_chunk: 3000
+      connector_get_max_wait: 300
+stages:
+  - stage_id: 0
+    max_num_seqs: 8
+    gpu_memory_utilization: 0.45
+    async_scheduling: false
+    enforce_eager: true
+    enable_prefix_caching: false
+    max_num_batched_tokens: 8192
+    max_model_len: 8192
+    output_connectors:
+      to_stage_1: connector_of_shared_memory
+    default_sampling_params:
+      temperature: 0.9
+      top_p: 1.0
+      top_k: 50
+      max_tokens: 4096
+  - stage_id: 1
+    max_num_seqs: 8
+    gpu_memory_utilization: 0.45
+    async_scheduling: false
+    enforce_eager: true
+    max_num_batched_tokens: 65536
+    max_model_len: 65536
+    input_connectors:
+      from_stage_0: connector_of_shared_memory
+    default_sampling_params:
+      temperature: 0.0
+      max_tokens: 65536
