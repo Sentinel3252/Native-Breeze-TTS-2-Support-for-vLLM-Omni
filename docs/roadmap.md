@@ -2,6 +2,8 @@
 
 The project provides native Breeze TTS 2 model integration for vLLM-Omni.
 The current development baseline is **`0.1.0-dev` — Core implementation**.
+The existing **`v0.1.0-dev`** Git tag preserves this largely complete core
+integration baseline for learning and comparison; real-model validation remains.
 Future versions below are planned scopes, not published releases or delivery dates.
 The [validation guide](validation.md) defines the evidence needed to claim support.
 
@@ -86,8 +88,9 @@ Submit focused upstream changes once tests and checkpoint evidence are available
 ## Version preservation
 
 Maintain one source tree with annotated Git tags, checksum-protected source
-archives, change history and per-version validation records. The current root
-has no Git repository: preserve an archive before subsequent core changes and
-create tags after importing the exported source into the published repository.
+archives, change history and per-version validation records. The root repository
+tracks both component source trees, and `v0.1.0-dev` preserves the core baseline.
+Keep that tag unchanged and preserve subsequent milestones with their own tags
+and source archives.
 Do not create parallel `v0.1/`, `v0.2/` code directories. The
 [release guide](releasing.md) describes export and version updates.

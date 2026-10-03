@@ -5,7 +5,8 @@ This file records implemented changes. Future scopes are in the
 
 ## `0.1.0-dev` — Core implementation (development baseline)
 
-Baseline recorded on 2026-10-03. No formal release or Git tag is claimed.
+Baseline recorded on 2026-10-03 and preserved by the `v0.1.0-dev` Git tag.
+This is a core implementation snapshot, not a validated stable runtime release.
 
 - Integrate native AR with text/instruction conditioning, text encoder
   projections and DimFusion.

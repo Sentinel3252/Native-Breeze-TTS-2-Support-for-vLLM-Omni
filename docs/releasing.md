@@ -1,9 +1,8 @@
 # Source releases
 
-The local workspace has an unversioned project root and two nested Git
-checkouts. Adding those directories directly to a new root repository can
-record embedded repositories without their source contents. Publish a clean
-source export instead, preserving the local checkouts and their changes.
+The root Git repository tracks the complete `vllm-omni/` and `breeze-tts/`
+source trees. The existing `v0.1.0-dev` tag preserves the core implementation
+baseline. Use Git tags for source comparison and clean archives for distribution.
 
 ## Export a reviewable source archive
 
@@ -17,9 +16,10 @@ python scripts/package_source.py
 
 The packager writes `dist/breeze-tts-omni-source.zip` and a SHA-256 sidecar.
 It refuses to overwrite existing artifacts; use `--output` for another name.
-It collects tracked upstream source from each nested checkout, includes the
-untracked integration files declared in `project-manifest.json`, and reads
-their working-tree contents. It preserves component licenses, including the
+It collects tracked component source from the combined root repository (or
+nested checkouts when used in that layout), includes the integration files
+declared in `project-manifest.json`, and reads working-tree contents.
+It preserves component licenses, including the
 reference model-license text. No Git metadata, downloaded weights, recordings,
 credentials, cache directories, or local build results are included.
 
@@ -34,7 +34,7 @@ For an already-exported tree without nested `.git` metadata, the packager
 uses and verifies the embedded source inventory. A combined root Git checkout
 is also supported: it derives tracked files beneath each component directory.
 
-## Publish from the exported tree
+## Publish an exported tree as a new repository
 
 Extract the archive into a new directory. Inspect its inventory and licenses,
 then run the standalone checks again. If creating a public source repository,
@@ -63,8 +63,8 @@ nested upstream workflows remain reference files.
 ## Preserve the version series
 
 The current development baseline is `0.1.0-dev`, recorded in
-`project-manifest.json` and both READMEs. This names a source baseline; no
-root-repository tag or formal release has been created. See the
+`project-manifest.json` and both READMEs, and preserved by the existing
+`v0.1.0-dev` tag. This is a development snapshot, not a stable release. See the
 [version roadmap](roadmap.md) and [change history](changelog.md).
 
 Before the next code milestone, preserve a named source snapshot:
@@ -75,9 +75,9 @@ python scripts/package_source.py --output dist/breeze-tts-omni-0.1.0-dev-source.
 
 Retain the matching `.sha256` sidecar and validation record. Existing archives
 must remain unchanged; choose a new snapshot suffix if that filename already
-exists. After importing an export into a root Git repository, commit the
-baseline and create an annotated `v0.1.0-dev` tag there. Subsequent releases use
-their own tags and archives; do not duplicate the source tree into version folders.
+exists. Keep the existing `v0.1.0-dev` tag unchanged. Subsequent releases use
+their own annotated tags and archives; do not duplicate the source tree into
+version folders.
 
 Update the manifest version, READMEs, change history and validation record
 together when adopting a new development baseline or releasing a milestone.

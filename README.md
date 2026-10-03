@@ -1,84 +1,64 @@
 # Breeze TTS 2 for vLLM-Omni
 
-Native autoregressive execution and a two-stage speech pipeline for Breeze TTS 2.
+This project adds Breeze TTS 2 support to vLLM-Omni and is intended for learning.
+It includes the official inference code alongside the modified framework source,
+so you can compare the two and see what the integration changes.
 
-[中文](README.zh-CN.md) · [Getting started](docs/getting-started.md) · [Architecture](docs/architecture.md) · [Roadmap](docs/roadmap.md) · [Contributing](CONTRIBUTING.md)
+[中文](README.zh-CN.md) · [Learning guide (中文)](docs/learning-guide.md) · [Getting started](docs/getting-started.md) · [Architecture](docs/architecture.md) · [Roadmap](docs/roadmap.md)
 
-This project integrates Breeze TTS 2 into vLLM-Omni. Stage 0 runs native
-AR attention and completes each audio frame with the reference depth decoder;
-Stage 1 synthesizes the complete frames with Mimi. The integration lives in the
-included `vllm-omni/` source tree.
+The official reference is in `breeze-tts/`; the integration is in `vllm-omni/`.
+The learning guide below explains the changes and how a request runs through them.
 
-**Current development version: `0.1.0-dev` — Core implementation.** This is an
-independent open-source model integration, with no stable release yet.
-Model registration, stage transport,
-depth decoding, text/instruction conditioning and history-preserving Mimi
-are implemented with CPU regression tests. Real-checkpoint loading, native
-AR parity, full-model audio continuity and concurrent serving still
-require Linux/CUDA validation. There is no published performance result or
-validated deployment configuration yet.
+## Current progress
 
-The initial scope is text/instruction speech synthesis through vLLM-Omni.
-Efficient streaming, voice cloning and advanced execution are planned extensions.
-The version identifies the development baseline; it does not indicate a
-published Git tag or a verified runtime release.
+The current tag is `v0.1.0-dev`. The core integration code is largely complete.
+Model registration, text/instruction conditioning, native autoregressive (AR)
+execution, depth completion, complete-frame feedback, stage transport, Mimi audio
+decoding, and the `/v1/audio/speech` adapter are implemented.
 
-## What is included
-
-- Native Qwen3/llama-like AR attention, complete-frame feedback and strict weight coverage.
-- A two-stage pipeline with incremental, request-isolated complete-codebook transport.
-- Reference depth attention with frame-local KV cache and request-local sampling.
-- Official text/instruction templates, text encoder projections and DimFusion.
-- Mimi prefix replay with terminal-tail flushing and request cleanup hooks.
-- A `/v1/audio/speech` adapter and async-chunk deployment configuration.
-- A dependency-free speech client, local checks, contribution templates, and source packaging.
-
-The code uses vLLM's scheduler and KV-cache execution path. This describes the
-implementation; it does not establish checkpoint correctness or throughput.
-
-## Support status
+So far, 35 core CPU tests have passed under both Transformers 4.57.3 and 5.10.1,
+along with 18 client and packaging tests. See the [validation record](docs/core-validation.md).
+These tests use tiny models and CPU callback harnesses. Real-checkpoint loading,
+CUDA numerical parity, speech quality, and concurrent serving have not been
+verified yet. There are no performance measurements or stable releases.
 
 | Area | Current state |
 | --- | --- |
-| Native AR execution | Implemented; checkpoint loading and numerical parity pending |
-| Complete-frame transport | Async and full-payload callbacks implemented; CPU regression tests |
-| Text/instruction speech API | Implemented; end-to-end synthesis pending |
-| Incremental audio | Full-prefix replay preserves history; tiny Mimi continuity tests pass |
-| Text encoder conditioning and prompt templates | Implemented; CPU projection parity tests against official methods |
-| Voice cloning, multi-speaker conditioning, CFG | Not supported; unsupported requests fail explicitly |
-| Concurrency and cancellation | Request isolation/cleanup tested on CPU; real serving validation pending |
-| Parallelism and graph capture | Initial path requires TP/PP=1, eager execution and disabled prefix caching |
-| Performance | No measured latency, memory requirement, or throughput claim |
+| Core text/instruction speech pipeline | Implemented; real-model end-to-end validation pending |
+| Incremental audio | Mimi retains history and re-decodes the full prefix; tiny-model continuity tests pass, efficiency work remains |
+| Request isolation and cleanup | CPU tests cover these; real serving cancellation, failure, and concurrency checks remain |
+| Voice cloning, multi-speaker conditioning, CFG | Not supported yet |
+| Execution configuration | Currently requires TP/PP=1, eager mode, and disabled prefix caching |
 
-See the [validation guide](docs/validation.md) for the checks needed to promote
-a capability to supported. Features of the original Breeze model are not
-automatically features of this integration.
+Use `git show v0.1.0-dev` to inspect this version and compare it with later changes.
 
-## Versions and planned milestones
+## Next steps
 
-| Version | Scope | Status / completion criteria |
-| --- | --- | --- |
-| `0.1.0-dev` | Core implementation: text conditioning, native AR, depth completion, full-frame feedback, Mimi prefix replay and speech API | Current baseline; CPU checks pass, real-checkpoint Linux/CUDA validation pending |
-| `0.1.0` | Validated basic model support | Load a real checkpoint, synthesize intelligible audio, verify streaming and serving lifecycle, document a reproducible environment |
-| `0.2.0` | Efficient streaming and service operation | True stateful Mimi decoding, batched depth decoding, request isolation, bounded state and failure/cancellation cleanup |
-| `0.3.0` | Voice cloning and CFG | Reference audio/text and speaker conditioning, multi-branch CFG, reference parity and API coverage |
-| `0.4.0` | Advanced execution and developer tooling | Validate execution optimizations individually; improve checkpoint preflight, startup diagnostics and integration tooling |
+| Planned version | Work |
+| --- | --- |
+| `0.1.0` | Verify real weights, compare AR/depth outputs with the reference, check Chinese/English speech and serving behavior, and record the Linux/CUDA environment |
+| `0.2.0` | Cache Mimi decoder state, batch depth decoding, limit retained request state, handle failures and cancellation, and measure performance |
+| `0.3.0` | Add reference audio/text, speaker conditioning, multi-branch CFG, and the API support and tests for them |
+| `0.4.0` | Check CUDA graphs, prefix caching, TP/PP, and quantization separately; add checkpoint preflight and startup diagnostics |
 
-Future versions are plans, with no release dates or support guarantees. Developer
-tools and regressions should improve throughout the series. Advanced features
-remain disabled until their own checks pass; implementing one does not imply
-support for every parallelism, quantization or graph-capture configuration.
+There are no fixed dates for these changes. See the [roadmap](docs/roadmap.md)
+for details and the [next-task document](docs/next-task-prompt.md) for the streaming work.
 
-Preserve versions as Git tags and source archives with checksums and validation
-records. Keep one maintained source tree. The current workspace has no root Git
-repository, so archive snapshots come first; tags belong in the published source
-repository. See the [roadmap](docs/roadmap.md), [change history](docs/changelog.md)
-and [release guide](docs/releasing.md). A reusable
-[next-task prompt](docs/next-task-prompt.md) describes the `0.2.0` work.
+## Learning path
 
-## Getting started
+The [learning guide (中文)](docs/learning-guide.md) lists the files to read in this order:
 
-For documentation, source checks, and client tests, Python 3.10+ is sufficient:
+1. Read how text conditioning, AR, depth decoding, and Mimi work together.
+2. Compare the reference generation code with registration, weight loading, and execution changes.
+3. Follow one request through the API, model callbacks, stage transport, and cleanup.
+4. Run the corresponding tests, then check the real model when you have a GPU environment.
+
+The guide also covers common mistakes and a few exercises. Reading the source
+and running CPU tests do not require a GPU. Inference needs Linux/CUDA.
+
+## Quick start
+
+Run basic checks from the project root with Python 3.10+:
 
 ```bash
 python scripts/check_project.py
@@ -86,104 +66,43 @@ python -m unittest discover -s tests -v
 python examples/speech_client.py --help
 ```
 
-Tensor/model tests run without vLLM or a downloaded checkpoint in a separate
-Python 3.12 environment:
+For model CPU tests, use a separate Python 3.12 environment. No vLLM installation
+or checkpoint download is needed:
 
 ```bash
 python -m pip install -r tests/core/requirements.txt
 python -m pytest tests/core -q
 ```
 
-The recorded baseline has **35 core tests passing with both Transformers 4.57.3
-and 5.10.1**, plus **18 standalone client/packaging tests**. These use tiny models
-and CPU callback harnesses. See [CPU test details](tests/core/README.md) and
-[current validation](docs/core-validation.md) for the scope of this evidence.
+For inference, follow [getting started](docs/getting-started.md) to prepare the
+runtime and checkpoint, and install this project's modified `vllm-omni/` source.
+Then use the [client example](examples/speech_client.py) and [API guide](docs/api.md).
+The launch configuration still needs runtime validation. The checks are listed
+in the [validation guide](docs/validation.md).
 
-Inference development targets **Linux with an NVIDIA CUDA GPU**. Install the
-modified source tree, rather than an unmodified `vllm-omni` wheel. The
-[setup guide](docs/getting-started.md) covers separate runtime environments,
-checkpoint preparation, and the remaining compatibility gates.
-
-After preparing a compatible checkpoint and installing the runtime, the
-development launch command is:
-
-```bash
-# Run from this project's root. Replace the path with your local checkpoint.
-vllm serve /path/to/breeze-tts-2 --omni \
-  --stage-configs-path vllm-omni/vllm_omni/deploy/breeze_tts.yaml \
-  --host 127.0.0.1 --port 8000
-```
-
-This is a starting point for checkpoint validation, not a verified quick-start
-deployment. Once the server produces valid audio:
-
-```bash
-python examples/speech_client.py \
-  --model /path/to/breeze-tts-2 \
-  --text "Hello from Breeze TTS." \
-  --output outputs/hello.wav
-```
-
-The client accepts Chinese text, an optional API key through `BREEZE_API_KEY`,
-and `--stream` for raw PCM streaming. See [API usage](docs/api.md) for the
-request contract and timing limitations.
-
-## Architecture
-
-```text
-POST /v1/audio/speech
-        │
-        ▼
-Text-only adapter → marked text token IDs
-        │
-        ▼
-Stage 0: native AR → sample codebook 0 → depth completion → full RVQ frame
-        │
-        ▼
-Request-keyed bridge → incremental frame payloads
-        │
-        ▼
-Stage 1: full codec history → Mimi prefix replay → per-request audio
-```
-
-The default bridge forwards eight frames at a time and flushes the terminal
-tail. Mimi replays the full prefix to preserve all decoder context. Streaming
-holds back a short tail; a final chunk flushes it. This correctness baseline
-has quadratic total decode work. See the [architecture guide](docs/architecture.md).
-
-## Repository layout
+## Repository and documentation
 
 | Path | Purpose |
 | --- | --- |
-| `vllm-omni/` | Upstream source snapshot with the native Breeze integration |
-| `breeze-tts/` | Official inference source used as the reference implementation |
-| `docs/` | Setup, API, design, validation, version roadmap, change history and release guidance |
-| `examples/` | Standalone client for an already-running server |
-| `scripts/` | Source checks and clean release archive generation |
-| `tests/` | Standalone tooling and CPU tensor/callback regression tests |
-| `project-manifest.json` | Upstream base commits and integration file inventory |
+| `breeze-tts/` | Official reference for understanding and comparing model behavior |
+| `vllm-omni/` | Framework source with the native Breeze integration |
+| `docs/learning-guide.md` | Learning order, source navigation, and exercises in Chinese |
+| `docs/` | Setup, architecture, API, validation, roadmap, [change history](docs/changelog.md), and [releases](docs/releasing.md) |
+| `tests/` | Tooling and CPU numerical, transport, and lifecycle tests |
+| `examples/`, `scripts/` | Speech client, source checks, and source packaging |
+| `project-manifest.json` | Upstream base revisions and integration file inventory |
 
-The local workspace contains two nested Git checkouts. Use the
-[release guide](docs/releasing.md) to export a complete source archive without
-nested Git metadata; a plain `git add` of these directories can omit their contents.
-
-## Contributing
-
-Real-checkpoint AR parity, audio quality and concurrent serving validation are
-the current priorities. Documentation fixes and reproducible
-failure reports are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md) and
-the [roadmap](docs/roadmap.md). Submit integration issues to the repository
-hosting this project; use the upstream trackers for confirmed upstream defects.
+Learning documentation, reproducible reports, and integration improvements are
+welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License and attribution
 
-Project source and documentation are provided under [Apache-2.0](LICENSE),
-subject to the notices and component licenses in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-Breeze model materials have a separate [research and non-commercial license](breeze-tts/MODEL_LICENSE);
-this project's code license does not grant rights to those materials.
-Model weights and generated audio are not included in source releases.
+Project source and documentation use [Apache-2.0](LICENSE). Component notices are
+in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Breeze model materials have a
+separate [research and non-commercial license](breeze-tts/MODEL_LICENSE).
+Source releases do not contain model weights or generated audio.
 
 Built on [vLLM-Omni](https://github.com/vllm-project/vllm-omni),
 [vLLM](https://github.com/vllm-project/vllm), and
-[BreezeBlue's reference implementation](https://github.com/breezeblue-ai/breeze-tts).
-This is an independent integration project, with no claim of upstream endorsement.
+[BreezeBlue](https://github.com/breezeblue-ai/breeze-tts).
+This is an independent integration project.
