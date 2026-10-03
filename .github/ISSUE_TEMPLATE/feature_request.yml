@@ -1,0 +1,22 @@
+name: Feature request
+description: Propose a concrete improvement to the native integration.
+title: '[Feature] '
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: User need
+      description: What workflow is blocked or difficult today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior and acceptance criteria
+      description: Describe the scope and how support could be verified.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and relevant references

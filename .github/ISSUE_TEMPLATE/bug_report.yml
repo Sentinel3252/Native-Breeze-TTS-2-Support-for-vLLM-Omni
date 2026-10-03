@@ -1,0 +1,30 @@
+name: Bug report
+description: Report a reproducible integration or tooling failure.
+title: '[Bug] '
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and observed behavior
+      description: Include the exact error. Remove credentials and private recordings.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal reproduction
+      description: Launch command, stage configuration, and the smallest request or tooling command.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and revisions
+      description: Source revision, checkpoint revision, OS, GPU/count, driver, CUDA, Python, vLLM, PyTorch, and Transformers. Use N/A for tooling-only reports.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs and checks already run
+      description: State what passed, failed, or remains unverified.

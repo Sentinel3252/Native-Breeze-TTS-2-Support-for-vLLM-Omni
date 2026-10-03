@@ -1,0 +1,41 @@
+{
+  "name": "breeze-tts-omni",
+  "version": "0.1.0-dev",
+  "status": "development",
+  "code_license": "Apache-2.0",
+  "upstream": {
+    "vllm-omni": {
+      "repository": "https://github.com/vllm-project/vllm-omni",
+      "base_commit": "58cb8de68bfef2993440b568907db60f448956b6"
+    },
+    "breeze-tts": {
+      "repository": "https://github.com/breezeblue-ai/breeze-tts",
+      "base_commit": "ca632ce6c4d05f7985da4eab29b1a5d445b43f7b"
+    }
+  },
+  "integration_files": [
+    "vllm-omni/vllm_omni/config/pipeline_registry.py",
+    "vllm-omni/vllm_omni/engine/arg_utils.py",
+    "vllm-omni/vllm_omni/entrypoints/openai/tts_adapters/__init__.py",
+    "vllm-omni/vllm_omni/model_executor/models/registry.py",
+    "vllm-omni/vllm_omni/deploy/breeze_tts.yaml",
+    "vllm-omni/vllm_omni/entrypoints/openai/tts_adapters/breeze_tts.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/__init__.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/pipeline.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/configuration_breeze_tts.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/configuration_breeze_base.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/depth_decoder.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/frame_decoder.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/text_conditioning.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/t5gemma2_encoder.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/codec_stream.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/weight_coverage.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/breeze_tts_talker.py",
+    "vllm-omni/vllm_omni/model_executor/models/breeze_tts/breeze_depth_codec.py",
+    "vllm-omni/vllm_omni/model_executor/stage_input_processors/breeze_tts.py",
+    "vllm-omni/vllm_omni/worker/gpu_ar_model_runner.py",
+    "vllm-omni/tests/model_executor/stage_input_processors/test_breeze_tts.py",
+    "vllm-omni/docs/design/breeze_tts_native_runtime.md",
+    "vllm-omni/docs/breeze_tts_next_tasks.md"
+  ]
+}

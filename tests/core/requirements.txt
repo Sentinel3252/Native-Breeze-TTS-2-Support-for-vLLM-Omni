@@ -1,0 +1,4 @@
+# CPU numerical and callback tests; no vLLM or pretrained checkpoint required.
+torch==2.9.1
+transformers==5.10.1
+pytest>=8,<10

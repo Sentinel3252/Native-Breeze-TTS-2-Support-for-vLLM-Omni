@@ -1,0 +1,4 @@
+# Independent environment for regenerating the official tiny-model oracle.
+torch==2.9.1
+transformers==4.57.3
+pytest>=8,<10
