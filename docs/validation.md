@@ -1,5 +1,7 @@
 # Validation and performance reporting
 
+[Learning path (中文)](learning-guide.md) · [Correctness rationale (中文)](learning/04-correctness.md) · [CPU validation record](core-validation.md)
+
 Support claims should be tied to a checkpoint revision, runtime environment,
 and reproducible result. The current integration has not passed the GPU gates
 below. No latency, throughput, or minimum-memory result is published.

@@ -1,6 +1,10 @@
 # Native pipeline architecture
 
-[Overview](../README.md) · [Validation](validation.md) · [Roadmap](roadmap.md)
+[Overview](../README.md) · [Learning path (中文)](learning-guide.md) · [Validation](validation.md) · [Roadmap](roadmap.md)
+
+This page describes implementation details and runtime constraints.
+The [learning guide (中文)](learning-guide.md) introduces the model and integration;
+the [request walkthrough](learning/03-request.md) follows the data and state through execution.
 
 ## AR and complete-frame feedback
 

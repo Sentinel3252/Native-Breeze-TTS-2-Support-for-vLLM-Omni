@@ -4,6 +4,10 @@ Contributions should make the native Breeze integration easier to use, verify,
 or maintain. The [roadmap](docs/roadmap.md) lists current priorities. Small,
 focused fixes and reproducible checkpoint failures are useful starting points.
 
+Learning documentation is organized in the [learning guide (中文)](docs/learning-guide.md).
+Describe the implementation and its reasons, with links to the relevant source.
+Keep setup commands and detailed validation procedures in their existing guides.
+
 ## Development setup
 
 Use Python 3.10+ for the standalone tooling. From the project root:

@@ -1,6 +1,6 @@
 # Getting started
 
-[Project overview](../README.md) · [API](api.md) · [Validation](validation.md)
+[Project overview](../README.md) · [Learning path (中文)](learning-guide.md) · [API](api.md) · [Validation](validation.md)
 
 The standalone tooling runs on Windows, macOS, or Linux with Python 3.10+.
 The native inference integration targets Linux/CUDA and is not yet a validated

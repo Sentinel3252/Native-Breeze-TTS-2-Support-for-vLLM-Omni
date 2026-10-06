@@ -46,15 +46,14 @@ for details and the [next-task document](docs/next-task-prompt.md) for the strea
 
 ## Learning path
 
-The [learning guide (中文)](docs/learning-guide.md) lists the files to read in this order:
+The [learning guide (中文)](docs/learning-guide.md) covers Breeze generation,
+the framework integration, request execution, and validation. The final article
+describes the steps for adapting another model: reading the reference code,
+choosing interfaces, loading weights, and handling request state.
 
-1. Read how text conditioning, AR, depth decoding, and Mimi work together.
-2. Compare the reference generation code with registration, weight loading, and execution changes.
-3. Follow one request through the API, model callbacks, stage transport, and cleanup.
-4. Run the corresponding tests, then check the real model when you have a GPU environment.
-
-The guide also covers common mistakes and a few exercises. Reading the source
-and running CPU tests do not require a GPU. Inference needs Linux/CUDA.
+The articles assume Python, PyTorch, and Transformer basics. Reading them
+requires no installation or GPU. They link to the relevant source; setup
+commands and validation procedures are in separate guides.
 
 ## Quick start
 
@@ -86,7 +85,7 @@ in the [validation guide](docs/validation.md).
 | --- | --- |
 | `breeze-tts/` | Official reference for understanding and comparing model behavior |
 | `vllm-omni/` | Framework source with the native Breeze integration |
-| `docs/learning-guide.md` | Learning order, source navigation, and exercises in Chinese |
+| `docs/learning-guide.md`, `docs/learning/` | Learning guide, integration explanations, and source references in Chinese |
 | `docs/` | Setup, architecture, API, validation, roadmap, [change history](docs/changelog.md), and [releases](docs/releasing.md) |
 | `tests/` | Tooling and CPU numerical, transport, and lifecycle tests |
 | `examples/`, `scripts/` | Speech client, source checks, and source packaging |

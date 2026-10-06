@@ -43,15 +43,12 @@ Mimi 音频解码和 `/v1/audio/speech` 适配均已实现。
 
 ## 如何学习
 
-建议先读[学习指南](docs/learning-guide.md)，里面按代码阅读顺序整理了相关文件：
+[学习指南](docs/learning-guide.md)按顺序介绍 Breeze 的生成过程、框架中的适配实现、
+一条请求的执行过程和验证方法。最后一篇整理了适配其他模型的步骤，
+包括分析参考代码、选择接口、加载权重和处理请求状态。
 
-1. 看懂文本条件、AR、Depth 和 Mimi 分别做什么。
-2. 对照官方生成代码，找到模型注册、权重加载和执行接口的改动。
-3. 跟着一条请求看 API、模型回调、阶段传输和结束清理。
-4. 运行对应测试，有 GPU 环境后再做真实模型验证。
-
-指南也列了容易出错的地方和几个练习。读源码、跑 CPU 测试不需要 GPU；
-实际推理需要 Linux/CUDA 环境。
+阅读需要 Python、PyTorch 和 Transformer 基础，无需先安装环境或准备 GPU。
+正文附有相关源码链接；安装命令和验证操作见对应文档。
 
 ## 快速上手
 
@@ -80,7 +77,7 @@ python -m pytest tests/core -q
 | --- | --- |
 | `breeze-tts/` | 官方参考实现，用于理解和对照模型行为 |
 | `vllm-omni/` | 包含 Breeze 原生适配的框架源码 |
-| `docs/learning-guide.md` | 学习顺序、源码导航与实践任务 |
+| `docs/learning-guide.md`、`docs/learning/` | 学习指南、适配说明与相关源码 |
 | `docs/` | 安装、架构、API、验证、路线图、[变更记录](docs/changelog.md)与[发布指南](docs/releasing.md) |
 | `tests/` | 工具测试与核心数值、传输、生命周期 CPU 测试 |
 | `examples/`、`scripts/` | 语音客户端、项目检查与源码打包 |

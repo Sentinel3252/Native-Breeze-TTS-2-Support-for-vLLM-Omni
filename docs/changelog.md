@@ -3,6 +3,17 @@
 This file records implemented changes. Future scopes are in the
 [version roadmap](roadmap.md); planned versions have not been released.
 
+## Unreleased — Learning documentation
+
+Documentation updated on 2026-10-06:
+
+- Replace the source-reading outline with a [five-article learning path](learning-guide.md)
+  covering model behavior, integration boundaries, request data/state, correctness,
+  and the workflow for adapting another model.
+- Explain the same-step depth hook, complete-frame feedback, weight coverage,
+  terminal chunks, and Mimi prefix replay with source references.
+- Update both README learning sections and reference-guide navigation.
+
 ## `0.1.0-dev` — Core implementation (development baseline)
 
 Baseline recorded on 2026-10-03 and preserved by the `v0.1.0-dev` Git tag.
